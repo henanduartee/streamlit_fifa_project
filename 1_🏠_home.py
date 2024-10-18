@@ -28,9 +28,10 @@ print(data_atual)
 
 st.markdown("# FIVA 23 OFFICIAL DATASET📊")
 st.sidebar.markdown("Desenvolvido por Henan L. Duarte")
-btn = st.button("Acesse os dados no Kaggle")
-if btn: 
-    webbrowser.open_new_tab("https://www.kaggle.com/datasets/kevwesophia/fifa23-official-datasetclean-data")
+btn = st.link_button(
+    "Acesse os dados no Kaggle", 
+    "https://www.kaggle.com/datasets/kevwesophia/fifa23-official-datasetclean-data"
+    )
 
 st.markdown(
     """
