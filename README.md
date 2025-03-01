@@ -1,8 +1,15 @@
-# Projeto de estudos da plataforma Asimov Academy
+# 📊 Streamlit FIFA Project
 
-## Tecnologias utilizadas:
+## 🎯 Descrição
+Este projeto é um dashboard interativo feito com **Streamlit** para analisar dados de jogadores do FIFA. O objetivo é permitir a visualização e filtragem de estatísticas de forma intuitiva.
 
-- Manipulação de caminhos de arquivos no sistema com Pathlib
-- Manipulação de datas com Datetime
-- Analise de dados com Pandas
-- Criação de Web App com Streamlit para visualização de dados
+## 🚀 Tecnologias utilizadas
+- Python
+- Streamlit
+- Pandas
+
+## 🛠 Como rodar o projeto
+
+1. Clone este repositório:
+   ```sh
+   git clone https://github.com/henanduartee/streamlit_fifa_project.git
