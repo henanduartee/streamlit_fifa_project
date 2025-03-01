@@ -1,38 +1,53 @@
 import streamlit as st
 
+# Configuração da Página
 st.set_page_config(
-    page_title="Player",
-    page_icon="🏃‍♀️",
+    page_title="Player Stats",
+    page_icon="🏃‍♂️",
     layout="wide"
 )
-# essa é a forma de importar os dados de '1__home.py' para manipulacao.
+
+# Verifica se os dados estão carregados na session state
+if "data" not in st.session_state:
+    st.error("Os dados ainda não foram carregados. Retorne à página inicial e recarregue o dataset.")
+    st.stop()
+
+# Carregar dados
 df_data = st.session_state["data"]
 
-clubes = df_data["Club"].unique()
-club = st.sidebar.selectbox("Club", clubes)
+# Seleção de Clube
+clubes = sorted(df_data["Club"].dropna().unique())
+club = st.sidebar.selectbox("🏟️ Selecione um Clube", clubes)
 
-df_players = df_data[(df_data["Club"] == club)]
+# Filtrar jogadores do clube selecionado
+df_players = df_data[df_data["Club"] == club]
+players = sorted(df_players["Name"].dropna().unique())
 
-players = df_players["Name"].unique()
-player = st.sidebar.selectbox("Jogador", players)
+# Seleção de Jogador
+player = st.sidebar.selectbox("🎽 Selecione um Jogador", players)
 
-# cria um novo dataframe baseado no nome do jogador selecionado no 'selectbox'
-players_stats = df_data[df_data["Name"] == player].iloc[0]
-st.image(players_stats["Photo"])
-st.title(players_stats["Name"])
-st.markdown(f"**Clube:** {players_stats['Club']}")
-st.markdown(f"**Posição:** {players_stats['Position']}")
+# Filtrar estatísticas do jogador selecionado
+player_stats = df_players[df_players["Name"] == player].iloc[0]
 
-col1, col2, col3, col4 = st.columns(4)
-col1.markdown(f"**Idade:** {players_stats['Age']}")
-col2.markdown(f"**Altura:** {players_stats['Height(cm.)'] / 100}")
-col3.markdown(f"**Peso:** {players_stats['Weight(lbs.)'] * 0.453:.2f}")
+# Exibir Informações do Jogador
+st.image(player_stats["Photo"], width=150)
+st.title(player_stats["Name"])
+st.markdown(f"**🏠 Clube:** {player_stats['Club']}")
+st.markdown(f"**🎯 Posição:** {player_stats['Position']}")
+
+# Informações Físicas
+col1, col2, col3 = st.columns(3)
+col1.markdown(f"**📅 Idade:** {player_stats['Age']} anos")
+col2.markdown(f"**📏 Altura:** {player_stats['Height(cm.)'] / 100:.2f} m")
+col3.markdown(f"**⚖️ Peso:** {player_stats['Weight(lbs.)'] * 0.453:.1f} kg")
 st.divider()
 
-st.subheader(f"Overall {players_stats['Overall']}")
-st.progress(int(players_stats['Overall']))
+# Overall
+st.subheader(f"⭐ Overall: {player_stats['Overall']}")
+st.progress(int(player_stats["Overall"]))
 
-col1, col2, col3, col4 = st.columns(4)
-col1.metric(label="Valor de mercado", value=f"£ {players_stats['Value(£)']:,}")
-col2.metric(label="Remuneração semanal", value=f"£ {players_stats['Wage(£)']:,}")
-col3.metric(label="Cláusula de rescisão", value=f"£ {players_stats['Release Clause(£)']:,}")
+# Métricas Financeiras
+col1, col2, col3 = st.columns(3)
+col1.metric(label="💰 Valor de mercado", value=f"£ {player_stats['Value(£)']:,}")
+col2.metric(label="💵 Salário semanal", value=f"£ {player_stats['Wage(£)']:,}")
+col3.metric(label="📑 Cláusula de rescisão", value=f"£ {player_stats['Release Clause(£)']:,}")

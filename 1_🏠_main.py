@@ -3,44 +3,62 @@ import streamlit as st
 from datetime import datetime
 from pathlib import Path
 
+# Configuração da Página
 st.set_page_config(
-    page_title="Home",
-    page_icon="🏠",
+    page_title="FIFA 23 Dataset",
+    page_icon="⚽",
     layout="wide"
 )
 
-pasta_atual = Path(__file__).parent
+# Caminho do dataset
+DATASET_PATH = Path(__file__).parent / 'data' / "CLEAN_FIFA23_official_data.csv"
 
+@st.cache_data
+def load_data(filepath: Path) -> pd.DataFrame:
+    """
+    Carrega o dataset do FIFA 23 e aplica filtros iniciais.
+    
+    Args:
+        filepath (Path): Caminho do arquivo CSV.
+    
+    Returns:
+        pd.DataFrame: DataFrame filtrado e ordenado.
+    """
+    df = pd.read_csv(filepath, index_col=0)
+    
+    # Filtrando jogadores com contrato válido e valor positivo
+    df = df[df["Contract Valid Until"] >= datetime.today().year]
+    df = df[df["Value(£)"] > 0]
+
+    # Ordenando por Overall (Melhores jogadores primeiro)
+    df = df.sort_values(by="Overall", ascending=False)
+    
+    return df
+
+# Carregar dados na session state
 if "data" not in st.session_state:
-    # ler a base .csv
-    df_data = pd.read_csv( pasta_atual / 'datasets' / "CLEAN_FIFA23_official_data.csv", index_col=0)
-    # realiza filtros na base
-    df_data = df_data[df_data["Contract Valid Until"] >= datetime.today().year]
-    df_data = df_data[df_data["Value(£)"] > 0]
-    # realiza um 'sort' na coluna 'Overall'
-    df_data = df_data.sort_values(by="Overall", ascending=False)
-    # instancia a 'session_state' como 'data' com os dados do Dataframe Filtrado e 'Sorting'
-    st.session_state["data"] = df_data
+    st.session_state["data"] = load_data(DATASET_PATH)
 
-data_atual = datetime.today().year
-print(data_atual)
+# Interface Streamlit
+st.title("📊 FIFA 23 Official Dataset")
+st.sidebar.markdown("Desenvolvido por **Henan L. Duarte**")
 
-st.markdown("# FIVA 23 OFFICIAL DATASET📊")
-st.sidebar.markdown("Desenvolvido por Henan L. Duarte")
-btn = st.link_button(
-    "Acesse os dados no Kaggle", 
+# Botão para acessar os dados no Kaggle
+st.link_button(
+    "📂 Acesse os dados no Kaggle", 
     "https://www.kaggle.com/datasets/kevwesophia/fifa23-official-datasetclean-data"
-    )
+)
 
 st.markdown(
     """
-    The Football Player Dataset from 2017 to 2023 provides comprehensive information about professional football players. 
-    The dataset contains a wide range of attributes, including player demographics, 
-    physical characteristics, playing statistics, contract details, and club affiliations.
-
-    With **over 17,000 records**, this dataset offers a valuable resource for football analysts, researchers, and 
-    enthusiasts interested in exploring various aspects of the footballing world, 
-    as it allows for studying player attributes, performance metrics, market valuation, club analysis, player positioning, 
-    and player development over time.
-"""
+    Este dataset contém informações detalhadas sobre jogadores de futebol profissionais de **2017 a 2023**.  
+    São **mais de 17.000 registros**, incluindo:
+    
+    - 📌 Estatísticas dos jogadores  
+    - 📊 Características físicas e demográficas  
+    - 🏆 Afiliações a clubes e contratos  
+    - 💰 Avaliação de mercado e atributos técnicos  
+    
+    🔍 O conjunto de dados é útil para análises de desempenho, evolução de jogadores e tendências do mercado de transferências.
+    """
 )
