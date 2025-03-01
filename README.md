@@ -1,15 +1,22 @@
-# 📊 Streamlit FIFA Project
+# 📊 Streamlit FIFA Data App  
 
-## 🎯 Descrição
-Este projeto é um dashboard interativo feito com **Streamlit** para analisar dados de jogadores do FIFA. O objetivo é permitir a visualização e filtragem de estatísticas de forma intuitiva.
+Este projeto é um painel interativo feito com **Streamlit** para explorar estatísticas de jogadores e clubes do FIFA 23.
 
-## 🚀 Tecnologias utilizadas
-- Python
-- Streamlit
-- Pandas
+## 🚀 Funcionalidades
+✅ Filtragem por clube e jogador  
+✅ Exibição de estatísticas individuais e do time  
+✅ Interface interativa e intuitiva  
 
-## 🛠 Como rodar o projeto
+## 🛠️ Tecnologias Utilizadas
+- Python  
+- Pandas  
+- Streamlit  
 
-1. Clone este repositório:
-   ```sh
+## 📸 Preview  
+Clique [aqui para acessar o projeto online](https://henanduartee-streamlit-fifa-project-1--main-wbbc4q.streamlit.app/).
+
+## ⚡ Como Executar
+1. Clone o repositório:
+   ```bash
    git clone https://github.com/henanduartee/streamlit_fifa_project.git
+
